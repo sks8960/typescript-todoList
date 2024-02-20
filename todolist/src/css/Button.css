@@ -1,0 +1,9 @@
+.Button {
+  padding: 3px 10px;
+  background-color: black;
+  border-color: black;
+}
+.Button:hover {
+  background-color: gray;
+  border-color: gray;
+}
