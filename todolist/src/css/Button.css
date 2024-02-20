@@ -2,8 +2,9 @@
   padding: 3px 10px;
   background-color: black;
   border-color: black;
+  margin-left: auto;
 }
 .Button:hover {
-  background-color: gray;
-  border-color: gray;
+  background-color: red;
+  border-color: red;
 }

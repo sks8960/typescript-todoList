@@ -80,12 +80,20 @@ function App() {
           }}
         >
           <Editor />
-          <div className="App-Item">
-            {todos.map((todo) => (
-              <div className="TodoItem" key={todo.id}>
-                <TodoItem {...todo} />
-              </div>
-            ))}
+          <div className="Todo-Item">
+            <h3>해야할 일</h3>
+            <hr className="hr" />
+            <div className="Item-container">
+              {todos.map((todo) => (
+                <div className="TodoItem" key={todo.id}>
+                  <TodoItem {...todo} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="Done-Item">
+            <h3>완료한 일</h3>
+            <hr className="hr" />
           </div>
         </TodoDispatchContext.Provider>
       </TodoStateContext.Provider>

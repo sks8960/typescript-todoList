@@ -7,15 +7,22 @@ interface Props extends Todo {}
 
 export default function TodoItem(props: Props) {
   const dispatch = useTodoDispatch();
+
   const onClickButton = () => {
     dispatch.onClickDelete(props.id);
   };
+
   return (
-    <div>
-      {props.id}번 : {props.content}
-      <Button className="Button" onClick={onClickButton}>
-        삭제
-      </Button>
+    <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div>
+        {props.id}번 : {props.content}
+      </div>
+      <div>
+        <Button className="Button">완료</Button>
+        <Button className="Button" onClick={onClickButton}>
+          삭제
+        </Button>
+      </div>
     </div>
   );
 }

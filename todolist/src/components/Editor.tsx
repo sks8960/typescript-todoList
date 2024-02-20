@@ -25,13 +25,10 @@ export default function Editor(props: Props) {
           placeholder="데이터 입력"
           aria-label="Recipient's username"
           aria-describedby="basic-addon2"
+          value={text}
           onChange={onChangeInput}
         />
-        <Button
-          variant="outline-secondary"
-          id="button-addon2"
-          onClick={onClickButton}
-        >
+        <Button variant="outline-secondary" onClick={onClickButton}>
           추가
         </Button>
       </InputGroup>
