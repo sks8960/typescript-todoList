@@ -82,7 +82,7 @@ function App() {
   const [completedTodos, completedDispatch] = useReducer(CompletedReducer, []);
 
   const idRef = useRef(0);
-  const DidRef = useRef(5000);
+  const DidRef = useRef(0);
 
   const onClickAdd = (text: string) => {
     dispatch({
