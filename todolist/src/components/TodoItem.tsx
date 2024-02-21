@@ -3,6 +3,8 @@ import { Todo } from "../Types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/esm/Button";
 import "../css/Button.css";
+import { text } from "stream/consumers";
+
 interface Props extends Todo {}
 
 export default function TodoItem(props: Props) {
@@ -12,13 +14,27 @@ export default function TodoItem(props: Props) {
     dispatch.onClickDelete(props.id);
   };
 
+  const onClickDoneButton = () => {
+    dispatch.onClickDone(props.content);
+    dispatch.onClickDelete(props.id);
+  };
+
+  const today = new Date();
+  const formattedDate = `${today.getFullYear()}년 ${
+    today.getMonth() + 1
+  }월 ${today.getDate()}일`;
+
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       <div>
-        {props.id}번 : {props.content}
+        {formattedDate} : {props.content}
       </div>
       <div>
-        <Button className="Button">완료</Button>
+        {!props.completed && (
+          <Button className="Button" onClick={onClickDoneButton}>
+            완료
+          </Button>
+        )}
         <Button className="Button" onClick={onClickButton}>
           삭제
         </Button>

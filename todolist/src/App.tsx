@@ -11,6 +11,7 @@ import { Todo } from "./Types";
 import TodoItem from "./components/TodoItem";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./bootstrap/Navbar";
+// import { text } from "stream/consumers";
 
 type Action =
   | {
@@ -18,16 +19,38 @@ type Action =
       data: {
         id: number;
         content: string;
+        completed: boolean;
       };
     }
-  | { type: "DELETE"; id: number };
+  | { type: "DELETE"; id: number; completed: boolean }
+  | {
+      type: "DONE";
+      data: {
+        id: number;
+        content: string;
+        completed: boolean;
+      };
+    };
 
-function reducer(state: Todo[], action: Action) {
+function reducer(state: Todo[], action: Action): Todo[] {
   switch (action.type) {
     case "CREATE":
       return [...state, action.data];
     case "DELETE":
       return state.filter((it) => it.id !== action.id);
+    default:
+      return state;
+  }
+}
+
+function CompletedReducer(state: Todo[], action: Action): Todo[] {
+  switch (action.type) {
+    case "DONE":
+      return [...state, action.data]; // 완료된 일 목록에 새로운 Todo 추가
+    case "DELETE":
+      return state.filter((it) => it.id !== action.id);
+    default:
+      return state;
   }
 }
 
@@ -35,17 +58,31 @@ export const TodoStateContext = React.createContext<Todo[] | null>(null);
 export const TodoDispatchContext = React.createContext<{
   onClickAdd: (text: string) => void;
   onClickDelete: (id: number) => void;
+  onClickDone: (text: string) => void;
+} | null>(null);
+export const CompletedStateContext = React.createContext<Todo[] | null>(null);
+export const CompletedDispatchContext = React.createContext<{
+  onClickDelete: (id: number) => void;
 } | null>(null);
 
 export function useTodoDispatch() {
-  const dispatch = useContext(TodoDispatchContext);
+  const dispatch = useContext(TodoDispatchContext); //useContext로 TodoDispatchContext 전달
   if (!dispatch) throw new Error("TodoDispatchContext에 오류 발생");
+  return dispatch;
+}
+
+export function useCompletedDispatch() {
+  const dispatch = useContext(CompletedDispatchContext);
+  if (!dispatch) throw new Error("CompletedDispatchContext에 오류 발생");
   return dispatch;
 }
 
 function App() {
   const [todos, dispatch] = useReducer(reducer, []);
+  const [completedTodos, completedDispatch] = useReducer(CompletedReducer, []);
+
   const idRef = useRef(0);
+  const DidRef = useRef(5000);
 
   const onClickAdd = (text: string) => {
     dispatch({
@@ -53,6 +90,7 @@ function App() {
       data: {
         id: idRef.current++,
         content: text,
+        completed: false,
       },
     });
   };
@@ -61,41 +99,64 @@ function App() {
     dispatch({
       type: "DELETE",
       id: id,
+      completed: false,
+    });
+  };
+
+  const onClickDone = (text: string) => {
+    completedDispatch({
+      type: "DONE",
+      data: {
+        id: DidRef.current++,
+        content: text,
+        completed: true,
+      },
     });
   };
 
   useEffect(() => {
     console.log(todos);
-  }, [todos]);
+    console.log(completedTodos);
+  }, [todos, completedTodos]);
 
   return (
     <div className="App">
       <Navbar />
       <h1 className="Title">Todo</h1>
       <TodoStateContext.Provider value={todos}>
-        <TodoDispatchContext.Provider
-          value={{
-            onClickAdd,
-            onClickDelete,
-          }}
-        >
-          <Editor />
-          <div className="Todo-Item">
-            <h3>해야할 일</h3>
-            <hr className="hr" />
-            <div className="Item-container">
-              {todos.map((todo) => (
-                <div className="TodoItem" key={todo.id}>
-                  <TodoItem {...todo} />
-                </div>
-              ))}
+        <CompletedStateContext.Provider value={completedTodos}>
+          <TodoDispatchContext.Provider
+            value={{
+              onClickAdd,
+              onClickDelete,
+              onClickDone,
+            }}
+          >
+            <Editor />
+            <div className="Todo-Item">
+              <h3>해야할 일</h3>
+              <hr className="hr" />
+              <div className="Item-container">
+                {todos.map((todo) => (
+                  <div className="TodoItem" key={todo.id}>
+                    <TodoItem {...todo} />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="Done-Item">
-            <h3>완료한 일</h3>
-            <hr className="hr" />
-          </div>
-        </TodoDispatchContext.Provider>
+            <div className="Done-Item">
+              <h3>완료한 일</h3>
+              <hr className="hr" />
+              <div className="Item-container">
+                {completedTodos.map((todo) => (
+                  <div className="TodoItem" key={todo.id}>
+                    <TodoItem {...todo} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </TodoDispatchContext.Provider>
+        </CompletedStateContext.Provider>
       </TodoStateContext.Provider>
     </div>
   );
