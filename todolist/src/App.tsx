@@ -62,7 +62,7 @@ export const TodoDispatchContext = React.createContext<{
 } | null>(null);
 export const CompletedStateContext = React.createContext<Todo[] | null>(null);
 export const CompletedDispatchContext = React.createContext<{
-  onClickDelete: (id: number) => void;
+  onClickCDelete: (id: number) => void;
 } | null>(null);
 
 export function useTodoDispatch() {
@@ -113,6 +113,13 @@ function App() {
       },
     });
   };
+  const onClickCDelete = (id: number) => {
+    completedDispatch({
+      type: "DELETE",
+      id: id,
+      completed: true,
+    });
+  };
 
   useEffect(() => {
     console.log(todos);
@@ -132,29 +139,31 @@ function App() {
               onClickDone,
             }}
           >
-            <Editor />
-            <div className="Todo-Item">
-              <h3>해야할 일</h3>
-              <hr className="hr" />
-              <div className="Item-container">
-                {todos.map((todo) => (
-                  <div className="TodoItem" key={todo.id}>
-                    <TodoItem {...todo} />
-                  </div>
-                ))}
+            <CompletedDispatchContext.Provider value={{ onClickCDelete }}>
+              <Editor />
+              <div className="Todo-Item">
+                <h3>해야할 일</h3>
+                <hr className="hr" />
+                <div className="Item-container">
+                  {todos.map((todo) => (
+                    <div className="TodoItem" key={todo.id}>
+                      <TodoItem {...todo} />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="Done-Item">
-              <h3>완료한 일</h3>
-              <hr className="hr" />
-              <div className="Item-container">
-                {completedTodos.map((todo) => (
-                  <div className="TodoItem" key={todo.id}>
-                    <TodoItem {...todo} />
-                  </div>
-                ))}
+              <div className="Done-Item">
+                <h3>완료한 일</h3>
+                <hr className="hr" />
+                <div className="Item-container">
+                  {completedTodos.map((todo) => (
+                    <div className="TodoItem" key={todo.id}>
+                      <TodoItem {...todo} />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            </CompletedDispatchContext.Provider>
           </TodoDispatchContext.Provider>
         </CompletedStateContext.Provider>
       </TodoStateContext.Provider>

@@ -1,4 +1,4 @@
-import { useTodoDispatch } from "../App";
+import { useTodoDispatch, useCompletedDispatch } from "../App";
 import { Todo } from "../Types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/esm/Button";
@@ -9,14 +9,20 @@ interface Props extends Todo {}
 
 export default function TodoItem(props: Props) {
   const dispatch = useTodoDispatch();
+  const Cdispatch = useCompletedDispatch();
 
   const onClickButton = () => {
     dispatch.onClickDelete(props.id);
+    console.log(props.id);
   };
 
   const onClickDoneButton = () => {
     dispatch.onClickDone(props.content);
     dispatch.onClickDelete(props.id);
+  };
+
+  const onClickCDeleteButton = () => {
+    Cdispatch.onClickCDelete(props.id);
   };
 
   const today = new Date();
@@ -35,9 +41,16 @@ export default function TodoItem(props: Props) {
             완료
           </Button>
         )}
-        <Button className="Button" onClick={onClickButton}>
-          삭제
-        </Button>
+        {!props.completed && (
+          <Button className="Button" onClick={onClickButton}>
+            삭제
+          </Button>
+        )}
+        {props.completed && (
+          <Button className="Button" onClick={onClickCDeleteButton}>
+            삭제
+          </Button>
+        )}
       </div>
     </div>
   );
