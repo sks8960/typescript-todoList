@@ -4,7 +4,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import "../css/Input.css";
 
 import { useState } from "react";
-import { TodoDispatchContext, useTodoDispatch } from "../App";
+import { TodoDispatchContext, useTodoDispatch } from "../page/TodoList";
 interface Props {}
 
 export default function Editor(props: Props) {

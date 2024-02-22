@@ -1,54 +1,7 @@
-.App {
-  text-align: center;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-Item {
-  padding: 10;
-  margin: 10px;
-}
-
-.TodoItem {
-  text-align: center;
-  margin: 10px auto;
-  border: 1px solid black;
-  width: 80%;
+html,
+body {
   height: 100%;
-}
-
-.Todo-Item {
-  /*Todo Item 컨테이너 역할 */
-  max-height: 300px; /* 컨테이너의 최대 높이보다 약간 작은 값으로 설정합니다. */
-  height: 300px;
-  overflow-y: auto; /* 세로 스크롤이 필요한 경우 스크롤을 생성합니다. */
-  width: 50%;
-  border: 1px solid black;
-  display: inline-block;
-  margin-top: 20px;
-}
-
-.Done-Item {
-  max-height: 300px; /* 컨테이너의 최대 높이보다 약간 작은 값으로 설정합니다. */
-  height: 300px;
-  overflow-y: auto; /* 세로 스크롤이 필요한 경우 스크롤을 생성합니다. */
-  width: 50%;
-  border: 1px solid black;
-  display: inline-block;
-  margin-top: 20px;
-}
-
-.hr {
-  width: 80%;
-  margin: 0 auto;
-  background: black;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }

@@ -1,0 +1,38 @@
+.ADeleteButton,
+.BDeleteButton,
+.DoneButton {
+  padding: 5px 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.ADeleteButton {
+  background-color: #ff4d4f; /* 진한 빨강색 */
+}
+
+.ADeleteButton:hover {
+  background-color: #ff7875; /* 빨강색의 더 밝은 버전 */
+  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.2); /* 그림자 효과 */
+}
+
+.BDeleteButton {
+  background-color: #262626; /* 진한 회색 */
+}
+
+.BDeleteButton:hover {
+  background-color: #595959; /* 회색의 더 밝은 버전 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+}
+
+.DoneButton {
+  background-color: #1890ff; /* 진한 파랑색 */
+}
+
+.DoneButton:hover {
+  background-color: #40a9ff; /* 파랑색의 더 밝은 버전 */
+  box-shadow: 0 4px 8px rgba(0, 0, 255, 0.2); /* 그림자 효과 */
+}

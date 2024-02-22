@@ -1,9 +1,8 @@
-import { useTodoDispatch, useCompletedDispatch } from "../App";
+import { useTodoDispatch, useCompletedDispatch } from "../page/TodoList";
 import { Todo } from "../Types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/esm/Button";
-import "../css/Button.css";
-import { text } from "stream/consumers";
+import "../css/TodoItem.css";
 
 interface Props extends Todo {}
 
@@ -31,23 +30,47 @@ export default function TodoItem(props: Props) {
   }월 ${today.getDate()}일`;
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <div>
-        {formattedDate} : {props.content}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "10px",
+        borderBottom: "1px solid #ccc",
+      }}
+    >
+      <div
+        style={{
+          borderRight: "1px solid gray", // 수직 구분선 추가
+          paddingRight: "20px", // 오른쪽 여백 추가
+        }}
+      >
+        <div style={{ fontSize: "16px", fontWeight: "bold" }}>
+          {formattedDate}
+        </div>
+      </div>
+      <div
+        style={{
+          marginLeft: "20px",
+          fontSize: "14px",
+          color: "#333",
+        }}
+      >
+        <div style={{ fontWeight: "bold" }}>{props.content}</div>
       </div>
       <div>
         {!props.completed && (
-          <Button className="Button" onClick={onClickDoneButton}>
+          <Button className="DoneButton" onClick={onClickDoneButton}>
             완료
           </Button>
         )}
         {!props.completed && (
-          <Button className="Button" onClick={onClickButton}>
+          <Button className="ADeleteButton" onClick={onClickButton}>
             삭제
           </Button>
         )}
         {props.completed && (
-          <Button className="Button" onClick={onClickCDeleteButton}>
+          <Button className="BDeleteButton" onClick={onClickCDeleteButton}>
             삭제
           </Button>
         )}
