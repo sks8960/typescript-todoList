@@ -12,7 +12,6 @@ import { Todo } from "../Types";
 import TodoItem from "../components/TodoItem";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../bootstrap/Navbar";
-// import { text } from "stream/consumers";
 
 type Action =
   | {
@@ -47,7 +46,7 @@ function reducer(state: Todo[], action: Action): Todo[] {
 function CompletedReducer(state: Todo[], action: Action): Todo[] {
   switch (action.type) {
     case "DONE":
-      return [...state, action.data]; // 완료된 일 목록에 새로운 Todo 추가
+      return [...state, action.data];
     case "DELETE":
       return state.filter((it) => it.id !== action.id);
     default:
@@ -67,7 +66,7 @@ export const CompletedDispatchContext = React.createContext<{
 } | null>(null);
 
 export function useTodoDispatch() {
-  const dispatch = useContext(TodoDispatchContext); //useContext로 TodoDispatchContext 전달
+  const dispatch = useContext(TodoDispatchContext);
   if (!dispatch) throw new Error("TodoDispatchContext에 오류 발생");
   return dispatch;
 }
@@ -79,11 +78,29 @@ export function useCompletedDispatch() {
 }
 
 function TodoList() {
-  const [todos, dispatch] = useReducer(reducer, []);
-  const [completedTodos, completedDispatch] = useReducer(CompletedReducer, []);
+  const [todos, dispatch] = useReducer(reducer, [], (initial) => {
+    const storedTodos = localStorage.getItem("todos");
+    return storedTodos ? JSON.parse(storedTodos) : initial;
+  });
+  const [completedTodos, completedDispatch] = useReducer(
+    CompletedReducer,
+    [],
+    (initial) => {
+      const storedCompletedTodos = localStorage.getItem("completedTodos");
+      return storedCompletedTodos ? JSON.parse(storedCompletedTodos) : initial;
+    }
+  );
 
   const idRef = useRef(0);
   const DidRef = useRef(0);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
+  useEffect(() => {
+    localStorage.setItem("completedTodos", JSON.stringify(completedTodos));
+  }, [completedTodos]);
 
   const onClickAdd = (text: string) => {
     dispatch({
@@ -114,6 +131,7 @@ function TodoList() {
       },
     });
   };
+
   const onClickCDelete = (id: number) => {
     completedDispatch({
       type: "DELETE",
@@ -121,11 +139,6 @@ function TodoList() {
       completed: true,
     });
   };
-
-  useEffect(() => {
-    console.log(todos);
-    console.log(completedTodos);
-  }, [todos, completedTodos]);
 
   return (
     <div className="TodoList">
