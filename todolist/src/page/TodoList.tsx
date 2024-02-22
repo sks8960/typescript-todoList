@@ -5,14 +5,12 @@ import React, {
   useReducer,
   useContext,
 } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import "../css/TodoList.css";
 import Editor from "../components/Editor";
 import { Todo } from "../Types";
 import TodoItem from "../components/TodoItem";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Navbar from "../bootstrap/Navbar";
-
 type Action =
   | {
       type: "CREATE";
